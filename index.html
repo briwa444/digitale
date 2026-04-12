@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>BAB TIZIMI STORE — متجر رقمي راقٍ</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --dark:   #080d1a;
+  --dark2:  #0d1526;
+  --dark3:  #111d35;
+  --dark4:  #162040;
+  --blue:   #2563eb;
+  --blue2:  #3b82f6;
+  --cyan:   #06b6d4;
+  --violet: #7c3aed;
+  --gold:   #f59e0b;
+  --green:  #10b981;
+  --text:   #e2e8f0;
+  --muted:  #94a3b8;
+  --card:   rgba(13,21,38,.85);
+  --card-b: rgba(59,130,246,.18);
+  --glow-b: rgba(37,99,235,.35);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--dark);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── WAVES BG ── */
+#wavesContainer{position:fixed;inset:0;z-index:-10;pointer-events:none}
+
+/* ── NOISE OVERLAY ── */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-9;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  opacity:.4;
+}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(8,13,26,.88);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(59,130,246,.14);
+  box-shadow:0 4px 32px rgba(0,0,0,.4);
+}
+.header-inner{
+  max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 24px;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer}
+.logo-shell{position:relative;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.logo-glow{position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,#38bdf8,#7c3aed,#f59e0b);box-shadow:0 0 28px rgba(56,189,248,.45);animation:pulseGlow 4s ease-in-out infinite}
+.logo-core{position:relative;z-index:1;width:40px;height:40px;background:rgba(8,13,26,.9);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.logo-core img{width:26px;height:26px;object-fit:contain}
+.brand-name{font-size:1rem;font-weight:900;color:#fff;line-height:1.2}
+.brand-tag{font-size:.7rem;color:var(--cyan);font-weight:600;letter-spacing:.06em}
+
+/* ── LIMELIGHT NAV ── */
+nav{display:flex;align-items:center;position:relative;height:44px;background:rgba(13,21,38,.7);border:1px solid rgba(59,130,246,.18);border-radius:14px;padding:0 6px;backdrop-filter:blur(12px);}
+.nav-btn{
+  position:relative;z-index:20;
+  background:none;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
+  color:var(--muted);padding:0 14px;height:100%;
+  display:flex;align-items:center;gap:7px;
+  transition:color .2s;border-radius:10px;
+  white-space:nowrap;
+}
+.nav-btn.ll-active{color:#fff;}
+.nav-btn:hover:not(.ll-active){color:rgba(255,255,255,.7);}
+.nav-btn svg{width:15px;height:15px;flex-shrink:0;transition:opacity .2s;}
+.nav-btn.ll-active svg{opacity:1;}
+.nav-btn:not(.ll-active) svg{opacity:.45;}
+
+/* limelight bar */
+#navLimelight{
+  position:absolute;top:0;z-index:10;height:3px;border-radius:999px;
+  background:linear-gradient(90deg,var(--cyan),var(--blue2));
+  box-shadow:0 30px 18px rgba(56,189,248,.22);
+  transition:left .35s cubic-bezier(.4,0,.2,1),width .35s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+#navLimelight::after{
+  content:"";position:absolute;left:-20%;top:3px;
+  width:140%;height:40px;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(56,189,248,.18),transparent);
+  clip-path:polygon(10% 0%,90% 0%,100% 100%,0% 100%);
+}
+
+.lang-row{display:flex;align-items:center;gap:4px}
+.lang-switch{display:flex;align-items:center;border:1px solid rgba(59,130,246,.22);border-radius:12px;background:rgba(13,21,38,.7);padding:3px;gap:2px}
+.lang-btn{background:none;border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;padding:5px 9px;border-radius:8px;color:var(--muted);transition:all .2s}
+.lang-btn.active{background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.35)}
+
+.btn-wa-h{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;text-decoration:none;
+  font-family:'Cairo',sans-serif;font-size:.82rem;font-weight:700;
+  padding:9px 16px;border-radius:12px;
+  box-shadow:0 0 20px rgba(22,163,74,.3);
+  transition:transform .22s,box-shadow .22s;white-space:nowrap;
+}
+.btn-wa-h:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(22,163,74,.45)}
+
+.hamburger{display:none;background:rgba(13,21,38,.8);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:8px;cursor:pointer}
+#mobileMenu{display:none;background:rgba(8,13,26,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(59,130,246,.12);padding:12px 16px 16px}
+#mobileMenu.open{display:block}
+.mob-nav{display:flex;flex-direction:column;gap:3px}
+.mob-nav .nav-btn{text-align:right;width:100%}
+.mob-langs{display:flex;gap:6px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(59,130,246,.1)}
+
+/* ── HERO ── */
+.hero{max-width:1300px;margin:0 auto;padding:60px 24px 50px;display:grid;gap:48px}
+@media(min-width:900px){.hero{grid-template-columns:1fr 1fr;align-items:center}}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(6,182,212,.25);
+  border-radius:999px;padding:6px 16px;margin-bottom:20px;
+  font-size:.78rem;font-weight:700;color:var(--cyan);
+  background:rgba(6,182,212,.07);backdrop-filter:blur(8px);
+  width:fit-content;
+}
+.hero-eyebrow .dot{width:7px;height:7px;border-radius:999px;background:var(--cyan);animation:blink 1.6s ease-in-out infinite}
+
+.hero-title{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1.15;color:#fff;margin-bottom:18px}
+.hero-title .hl{
+  background:linear-gradient(90deg,#38bdf8,#818cf8,#f59e0b);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-sub{font-size:.98rem;line-height:1.9;color:var(--muted);max-width:520px;margin-bottom:32px}
+
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:40px}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  color:#fff;border:none;cursor:pointer;text-decoration:none;
+  font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:800;
+  padding:13px 24px;border-radius:14px;
+  box-shadow:0 0 28px rgba(37,99,235,.4);
+  position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;
+}
+.btn-primary::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-130%);transition:transform .55s}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(37,99,235,.55)}
+.btn-primary:hover::before{transform:translateX(130%)}
+
+.btn-outline-h{
+  display:inline-flex;align-items:center;gap:9px;
+  border:1px solid rgba(59,130,246,.35);
+  background:rgba(13,21,38,.7);
+  color:#fff;text-decoration:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;
+  padding:13px 24px;border-radius:14px;backdrop-filter:blur(10px);
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.btn-outline-h:hover{transform:translateY(-3px);border-color:rgba(6,182,212,.5);box-shadow:0 0 20px rgba(6,182,212,.15)}
+
+/* hero stats */
+.hero-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:480px){.hero-stats{grid-template-columns:repeat(4,1fr)}}
+.stat-card{
+  background:var(--card);border:1px solid var(--card-b);
+  backdrop-filter:blur(14px);border-radius:18px;padding:16px;
+  transition:transform .22s,box-shadow .22s;
+}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 0 24px rgba(37,99,235,.2)}
+.stat-icon{font-size:1.1rem;margin-bottom:6px}
+.stat-val{font-size:1.3rem;font-weight:900;color:#fff}
+.stat-lbl{font-size:.7rem;color:var(--muted);margin-top:3px}
+
+/* hero screen */
+.hero-screen{
+  background:linear-gradient(145deg,rgba(13,21,38,.9),rgba(17,29,53,.85));
+  border:1px solid rgba(59,130,246,.22);
+  border-radius:28px;padding:16px;
+  box-shadow:0 0 60px rgba(37,99,235,.18),inset 0 1px 0 rgba(255,255,255,.05);
+  position:relative;overflow:hidden;
+}
+.hero-screen::before{
+  content:"";position:absolute;inset:0;border-radius:28px;
+  background:linear-gradient(120deg,transparent,rgba(56,189,248,.06),transparent);
+  transform:translateX(-130%);animation:heroShine 7s linear infinite;
+}
+.hero-img-wrap{border-radius:18px;overflow:hidden;position:relative}
+.hero-img-wrap img{width:100%;height:240px;object-fit:cover;display:block}
+.hero-img-cap{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(8,13,26,.92),transparent);
+  padding:20px 14px 12px;
+}
+.hero-cap-brand{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--cyan)}
+.hero-cap-name{font-size:1.15rem;font-weight:900;color:#fff}
+.hero-cap-sub{font-size:.76rem;color:rgba(255,255,255,.6);margin-top:2px}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.mini-card{
+  background:rgba(13,21,38,.8);border:1px solid rgba(59,130,246,.15);
+  border-radius:14px;padding:9px;cursor:pointer;
+  transition:transform .2s,border-color .2s;
+}
+.mini-card:hover{transform:translateY(-3px);border-color:rgba(6,182,212,.35)}
+.mini-card img{width:100%;height:46px;object-fit:cover;border-radius:9px;display:block}
+.mini-card .mc-n{font-size:.68rem;font-weight:700;color:#e2e8f0;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-card .mc-p{font-size:.68rem;font-weight:900;color:var(--cyan)}
+
+/* ── SECTIONS ── */
+.wrap{max-width:1300px;margin:0 auto;padding:48px 24px}
+.sec-head{margin-bottom:36px}
+.sec-badge{
+  display:inline-flex;border-radius:999px;padding:4px 14px;
+  font-size:.74rem;font-weight:700;margin-bottom:10px;
+  background:rgba(37,99,235,.12);color:var(--blue2);
+  border:1px solid rgba(59,130,246,.2);
+}
+.sec-badge.green{background:rgba(16,185,129,.1);color:#34d399;border-color:rgba(16,185,129,.2)}
+.sec-badge.gold {background:rgba(245,158,11,.1);color:#fbbf24;border-color:rgba(245,158,11,.2)}
+.sec-badge.rose {background:rgba(244,63,94,.1); color:#fb7185; border-color:rgba(244,63,94,.2)}
+.sec-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;color:#fff;line-height:1.2}
+.sec-sub{font-size:.9rem;color:var(--muted);margin-top:8px;max-width:540px;line-height:1.8}
+
+/* ── PRODUCTS ── */
+.products-grid{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:540px){.products-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.products-grid{grid-template-columns:repeat(4,1fr)}}
+
+.pcard{
+  background:var(--card);
+  border:1px solid var(--card-b);
+  backdrop-filter:blur(16px);
+  border-radius:22px;
+  overflow:hidden;cursor:pointer;
+  position:relative;
+  transition:transform .28s,box-shadow .28s,border-color .28s;
+  display:flex;flex-direction:column;
+}
+.pcard:hover{
+  transform:translateY(-10px) scale(1.015);
+  box-shadow:0 0 50px rgba(37,99,235,.25);
+  border-color:rgba(59,130,246,.40);
+}
+.pcard:hover .pimg{transform:scale(1.07)}
+.pcard:hover .pcard-glow{opacity:1}
+.pcard-glow{
+  position:absolute;inset:0;border-radius:22px;pointer-events:none;opacity:0;
+  box-shadow:inset 0 0 0 1.5px rgba(56,189,248,.45);
+  transition:opacity .25s;
+}
+
+.pimg-wrap{position:relative;height:220px;overflow:hidden;background:#0d1526}
+.pimg{width:100%;height:100%;object-fit:cover;transition:transform .44s ease;display:block}
+.pimg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,13,26,.75) 0%,rgba(8,13,26,.1) 50%,transparent 100%);
+}
+
+.ptag{
+  position:absolute;top:11px;right:11px;
+  background:rgba(8,13,26,.75);color:#fff;
+  font-size:.66rem;font-weight:800;border-radius:999px;
+  padding:4px 10px;backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+}
+.prating{
+  position:absolute;bottom:10px;left:11px;
+  display:flex;align-items:center;gap:4px;
+  background:rgba(8,13,26,.65);border-radius:999px;
+  padding:4px 9px;backdrop-filter:blur(8px);
+  color:#fff;font-size:.68rem;font-weight:700;
+  border:1px solid rgba(245,158,11,.2);
+}
+
+.pbody{padding:16px;flex:1;display:flex;flex-direction:column}
+.pname{font-size:1rem;font-weight:800;color:#fff;margin-bottom:6px}
+.pbio{
+  font-size:.8rem;color:var(--muted);line-height:1.7;flex:1;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+}
+.pfooter{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:8px}
+.pprice-lbl{font-size:.62rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.pprice{font-size:1.45rem;font-weight:900;color:var(--cyan)}
+.btn-card{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  color:#fff;border:none;cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:.75rem;font-weight:700;
+  padding:8px 13px;border-radius:11px;
+  box-shadow:0 0 16px rgba(37,99,235,.3);
+  position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;
+  white-space:nowrap;
+}
+.btn-card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-130%);transition:transform .5s}
+.btn-card:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(37,99,235,.45)}
+.btn-card:hover::before{transform:translateX(130%)}
+
+/* ── DETAIL PAGE v2 ── */
+#productDetail{display:none;padding:40px 0 60px;animation:fadeUp .35s ease}
+#productDetail.active{display:block}
+.detail-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+
+.btn-back{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(13,21,38,.8);color:var(--text);
+  border:1px solid rgba(59,130,246,.22);cursor:pointer;
+  font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:700;
+  padding:10px 18px;border-radius:12px;backdrop-filter:blur(10px);
+  transition:transform .2s,border-color .2s;margin-bottom:36px;
+}
+.btn-back:hover{transform:translateY(-2px);border-color:rgba(6,182,212,.4)}
+
+/* new detail layout */
+.dv2-grid{display:grid;gap:32px}
+@media(min-width:960px){.dv2-grid{grid-template-columns:1fr 1fr;align-items:start}}
+
+/* LEFT — image card */
+.dv2-img-card{
+  position:relative;border-radius:28px;overflow:hidden;
+  border:1px solid rgba(59,130,246,.25);
+  box-shadow:0 0 60px rgba(37,99,235,.2),6px 6px 0 rgba(37,99,235,.18);
+  background:var(--card);
+  transform-style:preserve-3d;
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+.dv2-img-card:hover{
+  transform:translateY(-6px) rotateY(-2deg);
+  box-shadow:0 0 80px rgba(37,99,235,.3),10px 10px 0 rgba(37,99,235,.22);
+}
+.dv2-img-card img{width:100%;height:420px;object-fit:cover;display:block}
+@media(min-width:600px){.dv2-img-card img{height:500px}}
+
+/* floating price badge */
+.dv2-price-badge{
+  position:absolute;top:-18px;right:-18px;
+  width:88px;height:88px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:2px solid rgba(255,255,255,.15);
+  box-shadow:0 0 30px rgba(6,182,212,.5),4px 4px 0 rgba(0,0,0,.4);
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  animation:priceBadgePop 5s ease-in-out infinite;
+  z-index:10;
+}
+.dv2-price-badge .pb-amount{font-size:1rem;font-weight:900;color:#fff;line-height:1}
+.dv2-price-badge .pb-label{font-size:.58rem;font-weight:700;color:rgba(255,255,255,.75);margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+@keyframes priceBadgePop{0%,100%{transform:rotate(0deg) scale(1)}25%{transform:rotate(8deg) scale(1.08)}75%{transform:rotate(-6deg) scale(1.05)}}
+
+/* popular ribbon */
+.dv2-ribbon{
+  position:absolute;top:22px;left:-8px;
+  background:linear-gradient(90deg,var(--cyan),var(--blue));
+  color:#fff;font-size:.7rem;font-weight:800;
+  padding:5px 18px 5px 14px;
+  clip-path:polygon(0 0,100% 0,calc(100% - 10px) 50%,100% 100%,0 100%);
+  box-shadow:0 4px 16px rgba(6,182,212,.35);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+/* img overlay gradient */
+.dv2-img-overlay{
+  position:absolute;bottom:0;left:0;right:0;height:45%;
+  background:linear-gradient(to top,rgba(8,13,26,.95),transparent);
+  pointer-events:none;
+}
+/* rating on image */
+.dv2-img-rating{
+  position:absolute;bottom:14px;left:16px;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(8,13,26,.65);backdrop-filter:blur(10px);
+  border:1px solid rgba(245,158,11,.25);border-radius:999px;
+  padding:6px 14px;color:#fff;font-size:.78rem;font-weight:700;
+}
+.dv2-img-rating .stars{color:#f59e0b;letter-spacing:1px}
+
+/* RIGHT — info panel */
+.dv2-info{display:flex;flex-direction:column;gap:20px}
+
+.dv2-tag{
+  display:inline-flex;border-radius:999px;padding:5px 16px;
+  font-size:.76rem;font-weight:800;
+  background:rgba(245,158,11,.12);color:#fbbf24;
+  border:1px solid rgba(245,158,11,.25);width:fit-content;
+}
+
+.dv2-name{
+  font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#fff;line-height:1.1;
+}
+
+.dv2-desc{font-size:.93rem;line-height:1.95;color:var(--muted)}
+
+/* features grid — neo-brutalist cards */
+.dv2-features-title{
+  font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;color:var(--muted);margin-bottom:12px;
+}
+.dv2-features{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dv2-feat{
+  display:flex;align-items:center;gap:9px;
+  background:rgba(13,21,38,.8);
+  border:1px solid rgba(59,130,246,.18);
+  border-radius:12px;padding:10px 12px;
+  cursor:default;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+  box-shadow:3px 3px 0 rgba(37,99,235,.15);
+}
+.dv2-feat:hover{
+  transform:translateX(4px);
+  border-color:rgba(6,182,212,.4);
+  box-shadow:4px 4px 0 rgba(6,182,212,.2);
+}
+.dv2-feat-chk{
+  width:22px;height:22px;border-radius:7px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  border:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:#fff;font-weight:900;
+  box-shadow:1px 1px 0 rgba(0,0,0,.4);
+  transition:transform .2s;
+}
+.dv2-feat:hover .dv2-feat-chk{transform:rotate(360deg) scale(1.15)}
+.dv2-feat-txt{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+
+/* CTA buttons */
+.dv2-btns{display:flex;flex-direction:column;gap:10px}
+@media(min-width:480px){.dv2-btns{flex-direction:row}}
+
+.dv2-btn-wa{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;flex:1;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;text-decoration:none;
+  font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:800;
+  padding:15px;border-radius:16px;
+  border:2px solid rgba(255,255,255,.08);
+  box-shadow:0 0 28px rgba(22,163,74,.35),5px 5px 0 rgba(0,0,0,.3);
+  transition:transform .22s,box-shadow .22s;
+  position:relative;overflow:hidden;
+}
+.dv2-btn-wa::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.15),transparent);transform:translateX(-130%);transition:transform .5s}
+.dv2-btn-wa:hover{transform:translateY(-3px);box-shadow:0 0 40px rgba(22,163,74,.5),6px 6px 0 rgba(0,0,0,.35)}
+.dv2-btn-wa:hover::before{transform:translateX(130%)}
+.dv2-btn-wa:active{transform:translateY(0);box-shadow:2px 2px 0 rgba(0,0,0,.3)}
+
+.dv2-btn-sec{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;flex:1;
+  background:rgba(13,21,38,.8);color:var(--text);text-decoration:none;
+  border:1px solid rgba(59,130,246,.3);
+  font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:700;
+  padding:15px;border-radius:16px;backdrop-filter:blur(10px);
+  box-shadow:4px 4px 0 rgba(37,99,235,.12);
+  transition:transform .22s,border-color .22s,box-shadow .22s;
+}
+.dv2-btn-sec:hover{transform:translateY(-3px);border-color:rgba(6,182,212,.5);box-shadow:5px 5px 0 rgba(6,182,212,.15)}
+
+/* trust bar */
+.dv2-trust{
+  display:flex;flex-wrap:wrap;gap:10px;
+  background:rgba(13,21,38,.6);border:1px solid rgba(59,130,246,.12);
+  border-radius:16px;padding:14px 16px;backdrop-filter:blur(10px);
+}
+.dv2-trust-item{display:flex;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--muted)}
+.dv2-trust-item span:first-child{font-size:1rem}
+.dv2-trust-item b{color:var(--text)}
+
+/* note */
+.dv2-note{
+  background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.16);
+  border-radius:14px;padding:12px 16px;font-size:.8rem;line-height:1.7;color:var(--muted);
+}
+.dv2-note strong{color:var(--cyan)}
+
+/* ── WHY ── */
+.why-card{
+  background:var(--card);border:1px solid var(--card-b);
+  backdrop-filter:blur(18px);border-radius:26px;padding:36px;
+  box-shadow:0 0 40px rgba(37,99,235,.1);
+}
+.why-grid{display:grid;gap:28px}
+@media(min-width:768px){.why-grid{grid-template-columns:1fr 1fr}}
+.why-feats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wfeat{
+  background:rgba(13,21,38,.7);border:1px solid rgba(59,130,246,.14);
+  border-radius:16px;padding:16px;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
+}
+.wfeat:hover{transform:translateY(-4px);border-color:rgba(6,182,212,.3);box-shadow:0 0 20px rgba(6,182,212,.1)}
+.wfeat-icon{font-size:1.3rem;margin-bottom:7px}
+.wfeat-title{font-size:.85rem;font-weight:700;color:#fff}
+.wfeat-sub{font-size:.72rem;color:var(--muted);margin-top:3px}
+
+/* ── REVIEWS ── */
+.reviews-grid{display:grid;gap:16px}
+@media(min-width:768px){.reviews-grid{grid-template-columns:repeat(3,1fr)}}
+.rcard{
+  background:var(--card);border:1px solid var(--card-b);
+  backdrop-filter:blur(14px);border-radius:20px;padding:20px;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.rcard:hover{transform:translateY(-5px);box-shadow:0 0 30px rgba(37,99,235,.18);border-color:rgba(59,130,246,.3)}
+.rstars{color:#fbbf24;font-size:.9rem;letter-spacing:2px;margin-bottom:10px}
+.rquote{font-size:1.6rem;color:rgba(59,130,246,.25);line-height:1;margin-bottom:4px}
+.rtext{font-size:.82rem;line-height:1.78;color:var(--muted)}
+.rauthor{display:flex;align-items:center;gap:10px;margin-top:14px}
+.ravatar{
+  width:36px;height:36px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(56,189,248,.3),rgba(124,58,237,.3));
+  border:1px solid rgba(59,130,246,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.85rem;color:#fff;flex-shrink:0;
+}
+.rname{font-size:.86rem;font-weight:700;color:#fff}
+.rrole{font-size:.72rem;color:var(--muted)}
+
+/* ── FAQ ── */
+.faq-grid{display:grid;gap:12px}
+@media(min-width:768px){.faq-grid{grid-template-columns:repeat(2,1fr)}}
+.fcard{
+  background:var(--card);border:1px solid var(--card-b);
+  backdrop-filter:blur(12px);border-radius:18px;padding:18px 20px;
+  transition:transform .2s,border-color .2s;
+}
+.fcard:hover{transform:translateY(-3px);border-color:rgba(59,130,246,.28)}
+.fq{font-size:.9rem;font-weight:700;color:#fff;margin-bottom:8px}
+.fa{font-size:.82rem;line-height:1.75;color:var(--muted)}
+
+/* ── CTA ── */
+.cta-card{
+  position:relative;overflow:hidden;border-radius:26px;
+  background:linear-gradient(135deg,#0d1a3a,var(--blue) 50%,var(--violet));
+  padding:48px 36px;
+  box-shadow:0 0 80px rgba(37,99,235,.35);
+  border:1px solid rgba(59,130,246,.3);
+}
+.cta-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 15% 50%,rgba(56,189,248,.2),transparent 55%),
+             radial-gradient(ellipse at 85% 50%,rgba(245,158,11,.12),transparent 50%);
+}
+.cta-inner{position:relative;display:flex;flex-direction:column;gap:24px}
+@media(min-width:768px){.cta-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.cta-badge{display:inline-flex;border-radius:999px;padding:4px 14px;font-size:.74rem;font-weight:700;background:rgba(255,255,255,.15);color:#fff;width:fit-content;margin-bottom:10px;backdrop-filter:blur(6px)}
+.cta-title{font-size:clamp(1.4rem,2.8vw,1.9rem);font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px}
+.cta-sub{font-size:.86rem;color:rgba(186,230,253,.85);line-height:1.75;max-width:480px}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:9px;
+  background:#fff;color:#0d1a3a;text-decoration:none;
+  font-family:'Cairo',sans-serif;font-size:.9rem;font-weight:900;
+  padding:14px 28px;border-radius:16px;white-space:nowrap;flex-shrink:0;
+  box-shadow:0 0 30px rgba(0,0,0,.25);
+  transition:transform .22s,box-shadow .22s;
+}
+.btn-cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 45px rgba(0,0,0,.3)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid rgba(59,130,246,.12);
+  background:rgba(8,13,26,.85);backdrop-filter:blur(20px);
+}
+.footer-inner{
+  max-width:1300px;margin:0 auto;
+  display:flex;flex-direction:column;gap:12px;
+  padding:22px 24px;font-size:.8rem;color:var(--muted);
+}
+@media(min-width:640px){.footer-inner{flex-direction:row;align-items:center;justify-content:space-between}}
+.footer-links{display:flex;gap:16px}
+.footer-links button{background:none;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:.8rem;color:var(--muted);transition:color .2s}
+.footer-links button:hover{color:#fff}
+
+/* ── WA FLOAT ── */
+.wa-float{
+  position:fixed;bottom:22px;left:22px;z-index:60;
+  width:54px;height:54px;border-radius:999px;
+  background:linear-gradient(135deg,#16a34a,#15803d);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  box-shadow:0 0 30px rgba(22,163,74,.45);
+  transition:transform .24s,box-shadow .24s;
+}
+.wa-float:hover{transform:scale(1.1) translateY(-2px);box-shadow:0 0 45px rgba(22,163,74,.6)}
+.wa-float svg{width:24px;height:24px}
+
+/* ── ANIMATIONS ── */
+@keyframes pulseGlow{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.88;transform:scale(1.04)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes heroShine{0%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:767px){
+  nav,.lang-row,.btn-wa-h{display:none!important}
+  .hamburger{display:flex}
+  .hero-right{display:none}
+}
+@media(min-width:768px){.hamburger{display:none}}
+
+/* scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:rgba(59,130,246,.35);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(59,130,246,.55)}
+</style>
+</head>
+<body>
+
+<!-- Waves BG -->
+<div id="wavesContainer" style="position:fixed;inset:0;z-index:-10;pointer-events:none;overflow:hidden;background:#080d1a;touch-action:none;">
+  <svg id="wavesSvg" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;pointer-events:none;"></svg>
+  <div id="wavesDot" style="position:absolute;top:0;left:0;width:8px;height:8px;background:rgba(56,189,248,0.7);border-radius:50%;transform:translate3d(calc(var(--wx,0px) - 50%),calc(var(--wy,0px) - 50%),0);will-change:transform;pointer-events:none;"></div>
+</div>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <div class="brand" onclick="showHome();window.scrollTo({top:0,behavior:'smooth'})">
+      <div class="logo-shell">
+        <div class="logo-glow"></div>
+        <div class="logo-core">
+          <img src="https://www.ofppt.ma/themes/custom/ofppt/assets/images/logo.png" alt="logo" onerror="this.style.display='none'"/>
+        </div>
+      </div>
+      <div>
+        <div class="brand-name">BAB TIZIMI STORE</div>
+        <div class="brand-tag">متجر رقمي راقٍ</div>
+      </div>
+    </div>
+
+    <nav id="mainNav">
+      <div id="navLimelight" style="left:-999px;width:0"></div>
+      <button class="nav-btn ll-active" onclick="showHome();goTo('home');llActivate(this)" data-i="navHome">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        الرئيسية
+      </button>
+      <button class="nav-btn" onclick="showHome();goTo('products');llActivate(this)" data-i="navProducts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        المنتجات
+      </button>
+      <button class="nav-btn" onclick="showHome();goTo('why');llActivate(this)" data-i="navWhy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        لماذا نحن
+      </button>
+      <button class="nav-btn" onclick="showHome();goTo('reviews');llActivate(this)" data-i="navReviews">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        الآراء
+      </button>
+      <button class="nav-btn" onclick="showHome();goTo('faq');llActivate(this)" data-i="navFaq">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        الأسئلة
+      </button>
+    </nav>
+
+    <div class="lang-row">
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('ar')">AR</button>
+        <button class="lang-btn" onclick="setLang('fr')">FR</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="https://wa.me/212622507855?text=%D9%87%D9%84%20%D9%84%D8%A7%20%D9%8A%D8%B2%D8%A7%D9%84%20%D9%87%D8%B0%D8%A7%20%D8%A7%D9%84%D8%B9%D9%86%D8%B5%D8%B1%20%D9%85%D8%AA%D8%A7%D8%AD%D8%A7%D9%8B%20%D8%9F" target="_blank" class="btn-wa-h">
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        واتساب
+      </a>
+    </div>
+
+    <button class="hamburger" onclick="toggleMenu()">
+      <svg id="ico-open" width="22" height="22" fill="none" stroke="#e2e8f0" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <svg id="ico-close" width="22" height="22" fill="none" stroke="#e2e8f0" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path d="M6 6l12 12M6 18L18 6"/></svg>
+    </button>
+  </div>
+
+  <div id="mobileMenu">
+    <div class="mob-nav">
+      <button class="nav-btn" onclick="showHome();goTo('home');closeMenu()" data-i="navHome">الرئيسية</button>
+      <button class="nav-btn" onclick="showHome();goTo('products');closeMenu()" data-i="navProducts">المنتجات</button>
+      <button class="nav-btn" onclick="showHome();goTo('why');closeMenu()" data-i="navWhy">لماذا نحن</button>
+      <button class="nav-btn" onclick="showHome();goTo('reviews');closeMenu()" data-i="navReviews">الآراء</button>
+      <button class="nav-btn" onclick="showHome();goTo('faq');closeMenu()" data-i="navFaq">الأسئلة</button>
+    </div>
+    <div class="mob-langs">
+      <button class="lang-btn active" onclick="setLang('ar')">AR</button>
+      <button class="lang-btn" onclick="setLang('fr')">FR</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── HOME ── -->
+<div id="homePage">
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="hero">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="dot"></span>
+          <span data-i="heroBadge">رقمي • احترافي • تفاعلي</span>
+        </div>
+        <h1 class="hero-title">
+          <span data-i="heroTitle1">المتجر الرقمي</span><br>
+          <span class="hl" data-i="heroTitle2">الذي يبهرك من أول نظرة</span>
+        </h1>
+        <p class="hero-sub" data-i="heroText">اشترِ اشتراكاتك الرقمية بسهولة وأمان — ChatGPT، Canva، Netflix وأكثر من 12 خدمة. توصيل فوري عبر واتساب.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="goTo('products')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <span data-i="heroPrimary">شاهد المنتجات</span>
+          </button>
+          <a href="https://wa.me/212622507855?text=%D9%87%D9%84%20%D9%84%D8%A7%20%D9%8A%D8%B2%D8%A7%D9%84%20%D9%87%D8%B0%D8%A7%20%D8%A7%D9%84%D8%B9%D9%86%D8%B5%D8%B1%20%D9%85%D8%AA%D8%A7%D8%AD%D8%A7%D9%8B%20%D8%9F" target="_blank" class="btn-outline-h">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-i="heroSecondary">تواصل عبر واتساب</span>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+            <div class="stat-val">12+</div><div class="stat-lbl" data-i="st1">خدمة رقمية</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="stat-val">&lt;5 دقائق</div><div class="stat-lbl" data-i="st2">توصيل فوري</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+            <div class="stat-val">100%</div><div class="stat-lbl" data-i="st3">مضمون</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="stat-val">24/7</div><div class="stat-lbl" data-i="st4">متوفر دائماً</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-screen">
+          <div class="hero-img-wrap">
+            <img src="public/products/chatgpt-plus.jpg" alt="ChatGPT Plus"
+              onerror="this.onerror=null;this.src='https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015242/chatgpt-plus_tdbnvb.jpg'"/>
+            <div class="hero-img-cap">
+              <div class="hero-cap-brand">BAB TIZIMI STORE</div>
+              <div class="hero-cap-name" id="hcName">ChatGPT Plus</div>
+              <div class="hero-cap-sub" id="hcSub">الذكاء الاصطناعي الأقوى للكتابة والتحليل</div>
+            </div>
+          </div>
+          <div class="mini-grid" id="miniGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-badge" data-i="productsBadge">الكتالوج</div>
+        <h2 class="sec-title" data-i="productsTitle">خدماتنا الرقمية الراقية</h2>
+        <p class="sec-sub" data-i="productsText">اشتراكات حقيقية وفورية — اطلب عبر واتساب واستلم في دقائق.</p>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why">
+    <div class="wrap" style="padding-top:0">
+      <div class="why-card">
+        <div class="why-grid">
+          <div>
+            <div class="sec-badge" data-i="whyBadge">لماذا نحن؟</div>
+            <h2 class="sec-title" style="margin-top:10px" data-i="whyTitle">لماذا نحن الخيار الأفضل؟</h2>
+            <p class="sec-sub" style="margin-top:12px" data-i="whyText">أسعار منافسة، توصيل فوري، دعم دائم وضمان على كل اشتراك.</p>
+          </div>
+          <div class="why-feats">
+            <div class="wfeat"><div class="wfeat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div><div class="wfeat-title" data-i="w1">مضمون 100%</div><div class="wfeat-sub">ضمان على كل طلب</div></div>
+            <div class="wfeat"><div class="wfeat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="wfeat-title" data-i="w2">توصيل فوري</div><div class="wfeat-sub">أقل من 5 دقائق</div></div>
+            <div class="wfeat"><div class="wfeat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="wfeat-title" data-i="w3">أسعار تنافسية</div><div class="wfeat-sub">أرخص من السوق</div></div>
+            <div class="wfeat"><div class="wfeat-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div><div class="wfeat-title" data-i="w4">دعم 24/7</div><div class="wfeat-sub">واتساب دائماً</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews">
+    <div class="wrap" style="padding-top:0">
+      <div class="sec-head">
+        <div class="sec-badge green" data-i="reviewsBadge">آراء العملاء</div>
+        <h2 class="sec-title" data-i="reviewsTitle">ماذا يقول عملاؤنا</h2>
+      </div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap" style="padding-top:0">
+      <div class="sec-head">
+        <div class="sec-badge rose" data-i="faqBadge">الأسئلة الشائعة</div>
+        <h2 class="sec-title" data-i="faqTitle">الأسئلة الشائعة</h2>
+      </div>
+      <div class="faq-grid" id="faqGrid"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="wrap" style="padding-top:0;padding-bottom:80px">
+      <div class="cta-card">
+        <div class="cta-glow"></div>
+        <div class="cta-inner">
+          <div>
+            <div class="cta-badge" data-i="ctaBadge">جاهز للطلب؟</div>
+            <h2 class="cta-title" data-i="ctaTitle">اطلب الآن واستلم فوراً</h2>
+            <p class="cta-sub" data-i="ctaText">تواصل معنا عبر واتساب وسنرسل لك الاشتراك خلال دقائق.</p>
+          </div>
+          <a href="https://wa.me/212622507855?text=%D9%87%D9%84%20%D9%84%D8%A7%20%D9%8A%D8%B2%D8%A7%D9%84%20%D9%87%D8%B0%D8%A7%20%D8%A7%D9%84%D8%B9%D9%86%D8%B5%D8%B1%20%D9%85%D8%AA%D8%A7%D8%AD%D8%A7%D9%8B%20%D8%9F" target="_blank" class="btn-cta">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-i="ctaButton">افتح واتساب الآن</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /homePage -->
+
+<!-- ── DETAIL PAGE v2 ── -->
+<div id="productDetail">
+  <div class="detail-wrap">
+    <button class="btn-back" onclick="showHome()">
+      ← <span data-i="detailsBack">رجوع</span>
+    </button>
+
+    <div class="dv2-grid">
+      <!-- LEFT: Image -->
+      <div class="dv2-img-card" id="dv2Card">
+        <div class="dv2-price-badge" id="dv2PriceBadge">
+          <div class="pb-amount" id="dv2Price"></div>
+          <div class="pb-label" data-i="detailsPrice">السعر</div>
+        </div>
+        <div class="dv2-ribbon" id="dv2Tag"></div>
+        <img id="dImg" src="" alt="" style="width:100%;height:420px;object-fit:cover;display:block"/>
+        <div class="dv2-img-overlay"></div>
+        <div class="dv2-img-rating">
+          <span class="stars">★★★★★</span>
+          <span id="dRating"></span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Info -->
+      <div class="dv2-info">
+        <h1 class="dv2-name" id="dName"></h1>
+        <p class="dv2-desc" id="dDesc"></p>
+
+        <!-- Features -->
+        <div>
+          <div class="dv2-features-title" data-i="detailsBenefits">المميزات</div>
+          <div class="dv2-features" id="dBenefits"></div>
+        </div>
+
+        <!-- Trust bar -->
+        <div class="dv2-trust">
+          <div class="dv2-trust-item"><span>✅</span><b>مضمون 100%</b></div>
+          <div class="dv2-trust-item"><span>⚡</span><b>&lt;5 دقائق</b> توصيل</div>
+          <div class="dv2-trust-item"><span>🔒</span><b>آمن وموثوق</b></div>
+          <div class="dv2-trust-item"><span>🎧</span><b>دعم 24/7</b></div>
+        </div>
+
+        <!-- CTA Buttons -->
+        <div class="dv2-btns">
+          <a id="dBtnWa" href="#" target="_blank" class="dv2-btn-wa">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <span data-i="detailsWhatsapp">اطلب عبر واتساب</span>
+          </a>
+          <a href="https://wa.me/212622507855?text=%D9%87%D9%84%20%D9%84%D8%A7%20%D9%8A%D8%B2%D8%A7%D9%84%20%D9%87%D8%B0%D8%A7%20%D8%A7%D9%84%D8%B9%D9%86%D8%B5%D8%B1%20%D9%85%D8%AA%D8%A7%D8%AD%D8%A7%D9%8B%20%D8%9F" target="_blank" class="dv2-btn-sec">
+            📞 <span data-i="detailsContact">تواصل سريع</span>
+          </a>
+        </div>
+
+        <div class="dv2-note" id="dNote"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <p data-i="footerText">BAB TIZIMI STORE — متجر رقمي راقٍ بالمغرب 🇲🇦</p>
+    <div class="footer-links">
+      <button onclick="showHome();window.scrollTo({top:0,behavior:'smooth'})" data-i="navHome">الرئيسية</button>
+      <button onclick="showHome();goTo('products')" data-i="navProducts">المنتجات</button>
+      <button onclick="showHome();goTo('cta')">تواصل</button>
+    </div>
+  </div>
+</footer>
+
+<!-- WA Float -->
+<a href="https://wa.me/212622507855?text=%D9%87%D9%84%20%D9%84%D8%A7%20%D9%8A%D8%B2%D8%A7%D9%84%20%D9%87%D8%B0%D8%A7%20%D8%A7%D9%84%D8%B9%D9%86%D8%B5%D8%B1%20%D9%85%D8%AA%D8%A7%D8%AD%D8%A7%D9%8B%20%D8%9F" target="_blank" class="wa-float" title="تواصل عبر واتساب">
+  <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+/* ══════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════ */
+const WA = "212622507855";
+
+/* ══════════════════════════════════════════
+   TRANSLATIONS
+══════════════════════════════════════════ */
+const T = {
+  ar:{
+    navHome:"الرئيسية",navProducts:"المنتجات",navWhy:"لماذا نحن",navReviews:"الآراء",navFaq:"الأسئلة",
+    heroBadge:"رقمي • احترافي • تفاعلي",
+    heroTitle1:"المتجر الرقمي",heroTitle2:"الذي يبهرك من أول نظرة",
+    heroText:"اشترِ اشتراكاتك الرقمية بسهولة وأمان — ChatGPT، Canva، Netflix وأكثر من 12 خدمة. توصيل فوري عبر واتساب.",
+    heroPrimary:"شاهد المنتجات",heroSecondary:"تواصل عبر واتساب",
+    st1:"خدمة رقمية",st2:"توصيل فوري",st3:"مضمون",st4:"متوفر دائماً",
+    productsBadge:"الكتالوج",productsTitle:"خدماتنا الرقمية الراقية",
+    productsText:"اشتراكات حقيقية وفورية — اطلب عبر واتساب واستلم في دقائق.",
+    whyBadge:"لماذا نحن؟",whyTitle:"لماذا نحن الخيار الأفضل؟",
+    whyText:"أسعار منافسة، توصيل فوري، دعم دائم وضمان على كل اشتراك.",
+    w1:"مضمون 100%",w2:"توصيل فوري",w3:"أسعار تنافسية",w4:"دعم 24/7",
+    reviewsBadge:"آراء العملاء",reviewsTitle:"ماذا يقول عملاؤنا",
+    faqBadge:"الأسئلة الشائعة",faqTitle:"الأسئلة الشائعة",
+    ctaBadge:"جاهز للطلب؟",ctaTitle:"اطلب الآن واستلم فوراً",
+    ctaText:"تواصل معنا عبر واتساب وسنرسل لك الاشتراك خلال دقائق.",
+    ctaButton:"افتح واتساب الآن",
+    footerText:"BAB TIZIMI STORE — متجر رقمي راقٍ بالمغرب 🇲🇦",
+    cardOpen:"عرض المنتج",
+    detailsBack:"رجوع",detailsPrice:"السعر",detailsBenefits:"المميزات",
+    detailsWhatsapp:"اطلب عبر واتساب",detailsContact:"تواصل سريع",
+  },
+  fr:{
+    navHome:"Accueil",navProducts:"Produits",navWhy:"Pourquoi nous",navReviews:"Avis",navFaq:"FAQ",
+    heroBadge:"Digital • Premium • Interactif",
+    heroTitle1:"La vitrine digitale",heroTitle2:"qui impressionne dès le premier regard",
+    heroText:"Achète tes abonnements digitaux en toute sécurité — ChatGPT, Canva, Netflix et plus de 12 services. Livraison instantanée via WhatsApp.",
+    heroPrimary:"Voir les produits",heroSecondary:"Contacter sur WhatsApp",
+    st1:"Services digitaux",st2:"Livraison instantanée",st3:"Garanti",st4:"Disponible 24/7",
+    productsBadge:"Catalogue",productsTitle:"Nos services digitaux premium",
+    productsText:"Abonnements réels et instantanés — commande via WhatsApp et reçois en minutes.",
+    whyBadge:"Pourquoi nous ?",whyTitle:"Pourquoi nous choisir ?",
+    whyText:"Prix compétitifs, livraison instantanée, support permanent et garantie sur chaque abonnement.",
+    w1:"Garanti 100%",w2:"Livraison rapide",w3:"Prix compétitifs",w4:"Support 24/7",
+    reviewsBadge:"Avis clients",reviewsTitle:"Ce que disent nos clients",
+    faqBadge:"FAQ",faqTitle:"Questions fréquentes",
+    ctaBadge:"Prêt à commander ?",ctaTitle:"Commande maintenant, reçois instantanément",
+    ctaText:"Contacte-nous sur WhatsApp et reçois ton abonnement en quelques minutes.",
+    ctaButton:"Ouvrir WhatsApp maintenant",
+    footerText:"BAB TIZIMI STORE — boutique digitale premium au Maroc 🇲🇦",
+    cardOpen:"Voir le produit",
+    detailsBack:"Retour",detailsPrice:"Prix",detailsBenefits:"Points forts",
+    detailsWhatsapp:"Commander via WhatsApp",detailsContact:"Contact rapide",
+  },
+  en:{
+    navHome:"Home",navProducts:"Products",navWhy:"Why us",navReviews:"Reviews",navFaq:"FAQ",
+    heroBadge:"Digital • Premium • Interactive",
+    heroTitle1:"The digital store",heroTitle2:"that impresses from first glance",
+    heroText:"Buy your digital subscriptions safely — ChatGPT, Canva, Netflix and 12+ services. Instant delivery via WhatsApp.",
+    heroPrimary:"View products",heroSecondary:"Contact on WhatsApp",
+    st1:"Digital services",st2:"Instant delivery",st3:"Guaranteed",st4:"24/7 available",
+    productsBadge:"Catalogue",productsTitle:"Our premium digital services",
+    productsText:"Real and instant subscriptions — order via WhatsApp and receive in minutes.",
+    whyBadge:"Why us?",whyTitle:"Why choose us?",
+    whyText:"Competitive prices, instant delivery, permanent support and guarantee on every subscription.",
+    w1:"100% Guaranteed",w2:"Fast delivery",w3:"Competitive prices",w4:"24/7 support",
+    reviewsBadge:"Reviews",reviewsTitle:"What our clients say",
+    faqBadge:"FAQ",faqTitle:"Frequently asked questions",
+    ctaBadge:"Ready to order?",ctaTitle:"Order now, receive instantly",
+    ctaText:"Contact us on WhatsApp and get your subscription within minutes.",
+    ctaButton:"Open WhatsApp now",
+    footerText:"BAB TIZIMI STORE — premium digital store in Morocco 🇲🇦",
+    cardOpen:"View product",
+    detailsBack:"Back",detailsPrice:"Price",detailsBenefits:"Highlights",
+    detailsWhatsapp:"Order via WhatsApp",detailsContact:"Quick contact",
+  },
+};
+
+/* ══════════════════════════════════════════
+   PRODUCTS — بيو حقيقي بالدارجة/عربي
+══════════════════════════════════════════ */
+const PRODUCTS = [
+  {
+    id:1,tag:"Top",price:"99 DH",rating:4.9,
+    img:"public/products/chatgpt-plus.jpg",
+    fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015242/chatgpt-plus_tdbnvb.jpg",
+    name:{ar:"ChatGPT Plus",fr:"ChatGPT Plus",en:"ChatGPT Plus"},
+    short:{
+      ar:"GPT-4o كامل + توليد صور DALL·E + تصفح الويب. الأداة الأقوى للكتابة والبرمجة والتحليل.",
+      fr:"GPT-4o complet + DALL·E + navigation web. L'outil le plus puissant pour écrire, coder et analyser.",
+      en:"Full GPT-4o + DALL·E image generation + web browsing. The most powerful tool for writing, coding and analysis.",
+    },
+    desc:{
+      ar:"ChatGPT Plus يعطيك وصولاً كاملاً لـ GPT-4o — النموذج الأذكى من OpenAI. كتابة احترافية، برمجة متقدمة، تحليل ملفات وصور، توليد صور بـ DALL·E، وتصفح الويب في الوقت الحقيقي. مثالي للطلاب، الفريلانسرز والمقاولين.",
+      fr:"ChatGPT Plus donne accès complet à GPT-4o — le modèle le plus intelligent d'OpenAI. Rédaction pro, code avancé, analyse de fichiers et d'images, génération DALL·E et navigation web en temps réel.",
+      en:"ChatGPT Plus gives you full access to GPT-4o — OpenAI's smartest model. Pro writing, advanced coding, file and image analysis, DALL·E generation and real-time web browsing.",
+    },
+    benefits:{
+      ar:["GPT-4o كامل بلا حدود","توليد صور DALL·E 3","تصفح الويب لحظياً","تحليل الملفات والصور","ذاكرة محادثة مخصصة","GPTs مخصصة"],
+      fr:["GPT-4o illimité","Génération DALL·E 3","Navigation web en temps réel","Analyse fichiers et images","Mémoire de conversation","GPTs personnalisés"],
+      en:["Unlimited GPT-4o","DALL·E 3 generation","Real-time web browsing","File and image analysis","Custom memory","Custom GPTs"],
+    },
+  },
+  {
+    id:2,tag:"Popular",price:"99 DH",rating:4.8,
+    img:"public/products/gemini-pro.jpg",
+    fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015251/gemini-pro_tvngm1.jpg",
+    name:{ar:"Gemini Advanced",fr:"Gemini Advanced",en:"Gemini Advanced"},
+    short:{
+      ar:"Gemini 1.5 Pro من Google — يقرأ ملفات PDF طويلة، يحلل صور وفيديوهات، ومدمج مع Gmail وDocs.",
+      fr:"Gemini 1.5 Pro de Google — lit des PDFs longs, analyse images et vidéos, intégré à Gmail et Docs.",
+      en:"Google's Gemini 1.5 Pro — reads long PDFs, analyzes images and videos, integrated with Gmail and Docs.",
+    },
+    desc:{
+      ar:"Gemini Advanced يعمل بنموذج Gemini 1.5 Pro — الأقوى من Google. سياق مليون كلمة، تحليل PDFs ضخمة، فهم الصور والفيديو، ومدمج مباشرة مع Gmail وGoogle Docs وDrive. مثالي للباحثين والمحترفين.",
+      fr:"Gemini Advanced fonctionne avec Gemini 1.5 Pro — le plus puissant de Google. Contexte d'un million de tokens, analyse de PDFs massifs, compréhension images/vidéo, intégré à Gmail, Docs et Drive.",
+      en:"Gemini Advanced runs Gemini 1.5 Pro — Google's most powerful. One million token context, massive PDF analysis, image/video understanding, directly integrated with Gmail, Docs and Drive.",
+    },
+    benefits:{
+      ar:["Gemini 1.5 Pro كامل","سياق مليون token","تحليل PDF وفيديو","مدمج مع Gmail وDocs","ردود أطول وأدق","Google One مدمج"],
+      fr:["Gemini 1.5 Pro complet","Contexte 1M tokens","Analyse PDF et vidéo","Intégré Gmail/Docs","Réponses longues et précises","Google One inclus"],
+      en:["Full Gemini 1.5 Pro","1M token context","PDF and video analysis","Gmail/Docs integrated","Long precise responses","Google One included"],
+    },
+  },
+  {
+    id:3,tag:"Creative",price:"30 DH",rating:4.9,
+    img:"public/products/canva-pro.jpg",
+    fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015261/canva-pro_e5qejz.jpg",
+    name:{ar:"Canva Pro",fr:"Canva Pro",en:"Canva Pro"},
+    short:{
+      ar:"قوالب احترافية، إزالة الخلفية بنقرة، ذكاء اصطناعي للتصميم، وتصدير بجودة عالية. لا تحتاج خبرة.",
+      fr:"Templates pro, suppression fond en un clic, IA de design, export HD. Aucune expérience requise.",
+      en:"Pro templates, one-click background removal, AI design tools, HD export. No experience needed.",
+    },
+    desc:{
+      ar:"Canva Pro يحولك لمصمم محترف بدون أي خبرة. أكثر من 100 مليون صورة وعنصر، قوالب احترافية، إزالة خلفية تلقائية، توليد صور بالذكاء الاصطناعي، وتصدير بجودة 4K. مثالي للتسويق، السوشيال ميديا والمقاولين.",
+      fr:"Canva Pro te transforme en designer pro sans expérience. 100M+ assets, templates pros, suppression fond auto, génération IA, export 4K. Parfait pour le marketing et les réseaux sociaux.",
+      en:"Canva Pro turns you into a pro designer with no experience. 100M+ assets, pro templates, auto background removal, AI generation, 4K export. Perfect for marketing and social media.",
+    },
+    benefits:{
+      ar:["100M+ صورة وعنصر","إزالة خلفية تلقائية","توليد صور بالذكاء الاصطناعي","تصدير بجودة 4K","100 GB تخزين سحابي","علامة تجارية مخصصة"],
+      fr:["100M+ images et assets","Suppression fond auto","Génération IA","Export 4K","100 Go cloud","Marque personnalisée"],
+      en:["100M+ images and assets","Auto background removal","AI image generation","4K export","100 GB cloud","Custom branding"],
+    },
+  },
+  {
+    id:6,tag:"Music",price:"40 DH",rating:4.7,
+    img:"public/products/spotify-premium.jpg",
+    fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015194/spotify-premium_bbpt4w.jpg",
+    name:{ar:"Spotify Premium",fr:"Spotify Premium",en:"Spotify Premium"},
+    short:{
+      ar:"100 مليون أغنية بدون إعلانات، تحميل أوفلاين، وجودة صوت 320kbps. استمع كيفما تشاء.",
+      fr:"100M chansons sans pub, téléchargement offline, qualité 320kbps. Écoutez comme vous voulez.",
+      en:"100M songs ad-free, offline downloads, 320kbps quality. Listen however you want.",
+    },
+    desc:{
+      ar:"Spotify Premium يعطيك تجربة استماع كاملة — بدون إعلانات، تخطي غير محدود، تحميل للاستماع أوفلاين، وجودة صوت 320kbps. أكثر من 100 مليون أغنية، بودكاست وكتب صوتية. يشتغل على كل الأجهزة.",
+      fr:"Spotify Premium offre une expérience d'écoute complète — sans pubs, sauts illimités, téléchargement offline, qualité 320kbps. 100M+ chansons, podcasts et livres audio.",
+      en:"Spotify Premium gives a complete listening experience — no ads, unlimited skips, offline downloads, 320kbps quality. 100M+ songs, podcasts and audiobooks.",
+    },
+    benefits:{
+      ar:["بدون إعلانات نهائياً","تحميل أوفلاين غير محدود","جودة 320kbps","تخطي غير محدود","100M+ أغنية وبودكاست","يشتغل على كل الأجهزة"],
+      fr:["Zéro publicité","Téléchargement offline illimité","Qualité 320kbps","Sauts illimités","100M+ titres et podcasts","Tous appareils"],
+      en:["Zero ads","Unlimited offline downloads","320kbps quality","Unlimited skips","100M+ tracks and podcasts","All devices"],
+    },
+  },
+  {
+    id:10,tag:"Office",price:"84 DH",rating:4.8,
+    img:"public/products/microsoft.jpg",
+    fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015208/microsoft_tryf3t.jpg",
+    name:{ar:"Microsoft 365",fr:"Microsoft 365",en:"Microsoft 365"},
+    short:{
+      ar:"Word، Excel، PowerPoint، Teams وCopilot AI — كل أدوات العمل الاحترافي في مكان واحد.",
+      fr:"Word, Excel, PowerPoint, Teams et Copilot AI — tous les outils pro en un seul endroit.",
+      en:"Word, Excel, PowerPoint, Teams and Copilot AI — all professional tools in one place.",
+    },
+    desc:{
+      ar:"Microsoft 365 يضم كل تطبيقات Office الاحترافية — Word، Excel، PowerPoint، Teams، OneNote وأكثر. مع Copilot AI المدمج لمساعدتك في كتابة التقارير وتحليل البيانات. يشتغل على 5 أجهزة مع 1 TB OneDrive.",
+      fr:"Microsoft 365 comprend toutes les apps Office pro — Word, Excel, PowerPoint, Teams, OneNote et plus. Avec Copilot AI intégré pour rapports et analyse de données. 5 appareils + 1 To OneDrive.",
+      en:"Microsoft 365 includes all pro Office apps — Word, Excel, PowerPoint, Teams, OneNote and more. With built-in Copilot AI for reports and data analysis. 5 devices + 1 TB OneDrive.",
+    },
+    benefits:{
+      ar:["Word + Excel + PowerPoint كامل","Microsoft Teams","Copilot AI مدمج","1 TB OneDrive","5 أجهزة","تحديثات مستمرة"],
+      fr:["Word + Excel + PowerPoint complets","Microsoft Teams","Copilot AI intégré","1 To OneDrive","5 appareils","Mises à jour continues"],
+      en:["Full Word + Excel + PowerPoint","Microsoft Teams","Built-in Copilot AI","1 TB OneDrive","5 devices","Continuous updates"],
+    },
+  },
+  {
+  id:7,
+  tag:"Streaming",
+  price:"79 DH",
+  rating:4.8,
+  img:"public/products/netflix.jpg",
+  fb:"https://res.cloudinary.com/dtcid1we8/image/upload/q_auto/f_auto/v1776015188/netflix-premium_hihklv.jpg",
+  name:{
+    ar:"Netflix Premium",
+    fr:"Netflix Premium",
+    en:"Netflix Premium"
+  },
+  short:{
+    ar:"مشاهدة بدون إعلانات، جودة عالية HD/4K، وأحدث الأفلام والمسلسلات العالمية.",
+    fr:"Streaming sans pub, qualité HD/4K, films et séries récents.",
+    en:"Ad-free streaming, HD/4K quality, latest movies and series."
+  },
+  desc:{
+    ar:"Netflix Premium يمنحك مشاهدة غير محدودة بدون إعلانات، بجودة HD و 4K، مع إمكانية المشاهدة على عدة أجهزة في نفس الوقت. استمتع بأحدث الأفلام والمسلسلات العالمية، مع تحديث مستمر للمحتوى.",
+    fr:"Netflix Premium offre un streaming illimité sans publicité, en qualité HD et 4K, avec accès multi-appareils. Profitez des derniers films et séries avec mises à jour régulières.",
+    en:"Netflix Premium gives unlimited ad-free streaming in HD and 4K, with multi-device access. Enjoy the latest movies and series with regular updates."
+  },
+  benefits:{
+    ar:[
+      "بدون إعلانات",
+      "جودة HD و 4K",
+      "مشاهدة على عدة أجهزة",
+      "أفلام ومسلسلات جديدة",
+      "تحديث مستمر للمحتوى",
+      "يشتغل على الهاتف والتلفاز"
+    ],
+    fr:[
+      "Sans publicité",
+      "Qualité HD et 4K",
+      "Multi-appareils",
+      "Films et séries récents",
+      "Mises à jour régulières",
+      "Compatible mobile et TV"
+    ],
+    en:[
+      "No ads",
+      "HD & 4K quality",
+      "Multi-device access",
+      "Latest movies & series",
+      "Regular updates",
+      "Works on phone and TV"
+    ]
+  }
+}
+];
+
+const REVIEWS = {
+  ar:[
+    {name:"أيمن التهامي",role:"مصمم فريلانسر — الدار البيضاء",text:"خدت Canva Pro و Midjourney من هاد المتجر، والله كانو فعلين ووصلوني بسرعة. التصاميم ديالي تحسنت بزاف والعملاء راضيين."},
+    {name:"سلمى البكوري",role:"طالبة دكتوراه — الرباط",text:"Claude Pro ساعدني بزاف فتحليل مقالات طويلة وكتابة رسالتي. الجودة عالية وما خيباش ظني والخدمة سريعة."},
+    {name:"يوسف الإدريسي",role:"مقاول ومطور — مراكش",text:"كاين ChatGPT Plus وNotion Plus، الاثنين جاونيا بلا مشاكل. المتجر موثوق وصاحبه جاوبني فدقيقتين."},
+  ],
+  fr:[
+    {name:"Aymane T.",role:"Designer freelance — Casablanca",text:"J'ai pris Canva Pro et Midjourney ici, les deux fonctionnels et livrés en quelques minutes. Mes designs se sont vraiment améliorés."},
+    {name:"Salma B.",role:"Doctorante — Rabat",text:"Claude Pro m'a énormément aidé pour analyser de longs articles et rédiger ma thèse. Haute qualité, service rapide."},
+    {name:"Youssef I.",role:"Entrepreneur — Marrakech",text:"ChatGPT Plus et Notion Plus, les deux sans problème. Boutique fiable, réponse en 2 minutes."},
+  ],
+  en:[
+    {name:"Aymane T.",role:"Freelance designer — Casablanca",text:"Got Canva Pro and Midjourney here, both functional and delivered in minutes. My designs have improved a lot."},
+    {name:"Salma B.",role:"PhD student — Rabat",text:"Claude Pro helped me a lot with analyzing long articles and writing my thesis. High quality, fast service."},
+    {name:"Youssef I.",role:"Entrepreneur — Marrakech",text:"ChatGPT Plus and Notion Plus, both without issues. Reliable store, reply in 2 minutes."},
+  ],
+};
+
+const FAQS = {
+  ar:[
+    {q:"كيفاش كنستلم الاشتراك؟",a:"كتتواصل معنا عبر واتساب وكنرسلوك الاشتراك مباشرة — عادة في أقل من 5 دقائق."},
+    {q:"واش الاشتراكات أصلية؟",a:"آه، غاعة الاشتراكات حقيقية ومضمونة. إلا كان فيها أي مشكل كنحلوه فالحال."},
+    {q:"واش كاين ضمان؟",a:"آه، غاعة المنتجات معاها ضمان. إلا ما خدمتش الخدمة كنرجعوك الفلوس أو كنبدلوك."},
+    {q:"فاش كنتقبل الدفع؟",a:"كنقبلو الدفع بالنقود (يد بيد)، CashPlus، Barid Cash، أو تحويل بنكي."},
+  ],
+  fr:[
+    {q:"Comment je reçois mon abonnement ?",a:"Contacte-nous via WhatsApp et on t'envoie l'abonnement directement — généralement en moins de 5 minutes."},
+    {q:"Les abonnements sont authentiques ?",a:"Oui, tous les abonnements sont réels et garantis. En cas de problème on le règle immédiatement."},
+    {q:"Y a-t-il une garantie ?",a:"Oui, tous les produits sont garantis. Si ça ne fonctionne pas, on te rembourse ou on remplace."},
+    {q:"Quels modes de paiement acceptez-vous ?",a:"On accepte le cash, CashPlus, Barid Cash ou virement bancaire."},
+  ],
+  en:[
+    {q:"How do I receive my subscription?",a:"Contact us via WhatsApp and we send you the subscription directly — usually in less than 5 minutes."},
+    {q:"Are the subscriptions genuine?",a:"Yes, all subscriptions are real and guaranteed. If there's any issue we resolve it immediately."},
+    {q:"Is there a guarantee?",a:"Yes, all products are guaranteed. If it doesn't work, we refund or replace."},
+    {q:"What payment methods do you accept?",a:"We accept cash, CashPlus, Barid Cash or bank transfer."},
+  ],
+};
+
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let lang = "ar";
+
+/* ══════════════════════════════════════════
+   WAVES BACKGROUND
+══════════════════════════════════════════ */
+(function(){
+  const container = document.getElementById("wavesContainer");
+  const svg = document.getElementById("wavesSvg");
+  const dot = document.getElementById("wavesDot");
+
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
+  const STROKE = "rgba(56,189,248,0.45)";
+  const xGap = isMobile ? 18 : 8;
+  const yGap = isMobile ? 18 : 8;
+
+  let W = 0, H = 0;
+  let lines = [];
+  let paths = [];
+  let noise2D = null;
+  let raf = null;
+
+  const mouse = { x: -10, y: 0, lx: 0, ly: 0, sx: 0, sy: 0, v: 0, vs: 0, a: 0, set: false };
+
+  // Inline simplex noise (2D)
+  function buildNoise2D() {
+    const p = new Uint8Array(512);
+    const perm = new Uint8Array(256);
+    for (let i = 0; i < 256; i++) perm[i] = i;
+    for (let i = 255; i > 0; i--) {
+      const j = Math.random() * (i + 1) | 0;
+      const t = perm[i]; perm[i] = perm[j]; perm[j] = t;
+    }
+    for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
+    const G2 = (3 - Math.sqrt(3)) / 6;
+    const F2 = 0.5 * (Math.sqrt(3) - 1);
+    const grad2 = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+    function dot2(g, x, y) { return g[0]*x + g[1]*y; }
+    return function noise(xin, yin) {
+      const s = (xin + yin) * F2;
+      const i = Math.floor(xin + s), j = Math.floor(yin + s);
+      const t = (i + j) * G2;
+      const x0 = xin - (i - t), y0 = yin - (j - t);
+      let i1, j1;
+      if (x0 > y0) { i1 = 1; j1 = 0; } else { i1 = 0; j1 = 1; }
+      const x1 = x0 - i1 + G2, y1 = y0 - j1 + G2;
+      const x2 = x0 - 1 + 2*G2, y2 = y0 - 1 + 2*G2;
+      const ii = i & 255, jj = j & 255;
+      const gi0 = p[ii + p[jj]] % 8;
+      const gi1 = p[ii + i1 + p[jj + j1]] % 8;
+      const gi2 = p[ii + 1 + p[jj + 1]] % 8;
+      let t0 = 0.5 - x0*x0 - y0*y0;
+      const n0 = t0 < 0 ? 0 : (t0 *= t0, t0 * t0 * dot2(grad2[gi0], x0, y0));
+      let t1 = 0.5 - x1*x1 - y1*y1;
+      const n1 = t1 < 0 ? 0 : (t1 *= t1, t1 * t1 * dot2(grad2[gi1], x1, y1));
+      let t2 = 0.5 - x2*x2 - y2*y2;
+      const n2 = t2 < 0 ? 0 : (t2 *= t2, t2 * t2 * dot2(grad2[gi2], x2, y2));
+      return 70 * (n0 + n1 + n2);
+    };
+  }
+
+  function initNoise() {
+    noise2D = buildNoise2D();
+  }
+
+  function setSize() {
+    W = container.clientWidth || window.innerWidth;
+    H = container.clientHeight || window.innerHeight;
+    svg.style.width = W + "px";
+    svg.style.height = H + "px";
+  }
+
+  function setLines() {
+    paths.forEach(p => p.remove());
+    paths = [];
+    lines = [];
+
+    const oWidth = W + 200;
+    const oHeight = H + 30;
+    const totalLines = Math.ceil(oWidth / xGap);
+    const totalPoints = Math.ceil(oHeight / yGap);
+    const xStart = (W - xGap * totalLines) / 2;
+    const yStart = (H - yGap * totalPoints) / 2;
+
+    for (let i = 0; i < totalLines; i++) {
+      const pts = [];
+      for (let j = 0; j < totalPoints; j++) {
+        pts.push({
+          x: xStart + xGap * i,
+          y: yStart + yGap * j,
+          wave: { x: 0, y: 0 },
+          cursor: { x: 0, y: 0, vx: 0, vy: 0 }
+        });
+      }
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("fill", "none");
+      path.setAttribute("stroke", STROKE);
+      path.setAttribute("stroke-width", "1");
+      svg.appendChild(path);
+      paths.push(path);
+      lines.push(pts);
+    }
+  }
+
+  function movePoints(time) {
+    lines.forEach(pts => {
+      pts.forEach(p => {
+        const move = noise2D(
+          (p.x + time * 0.008) * 0.003,
+          (p.y + time * 0.003) * 0.002
+        ) * 8;
+        p.wave.x = Math.cos(move) * 12;
+        p.wave.y = Math.sin(move) * 6;
+
+        const dx = p.x - mouse.sx;
+        const dy = p.y - mouse.sy;
+        const d = Math.hypot(dx, dy);
+        const l = Math.max(175, mouse.vs);
+        if (d < l) {
+          const s = 1 - d / l;
+          const f = Math.cos(d * 0.001) * s;
+          p.cursor.vx += Math.cos(mouse.a) * f * l * mouse.vs * 0.00035;
+          p.cursor.vy += Math.sin(mouse.a) * f * l * mouse.vs * 0.00035;
+        }
+        p.cursor.vx += (0 - p.cursor.x) * 0.01;
+        p.cursor.vy += (0 - p.cursor.y) * 0.01;
+        p.cursor.vx *= 0.95;
+        p.cursor.vy *= 0.95;
+        p.cursor.x += p.cursor.vx;
+        p.cursor.y += p.cursor.vy;
+        p.cursor.x = Math.min(50, Math.max(-50, p.cursor.x));
+        p.cursor.y = Math.min(50, Math.max(-50, p.cursor.y));
+      });
+    });
+  }
+
+  function moved(p, withCursor) {
+    return {
+      x: p.x + p.wave.x + (withCursor ? p.cursor.x : 0),
+      y: p.y + p.wave.y + (withCursor ? p.cursor.y : 0)
+    };
+  }
+
+  function drawLines() {
+    lines.forEach((pts, li) => {
+      if (pts.length < 2 || !paths[li]) return;
+      const fp = moved(pts[0], false);
+      let d = `M ${fp.x} ${fp.y}`;
+      for (let i = 1; i < pts.length; i++) {
+        const c = moved(pts[i], true);
+        d += ` L ${c.x} ${c.y}`;
+      }
+      paths[li].setAttribute("d", d);
+    });
+  }
+
+  function tick(time) {
+    mouse.sx += (mouse.x - mouse.sx) * 0.1;
+    mouse.sy += (mouse.y - mouse.sy) * 0.1;
+    const dx = mouse.x - mouse.lx, dy = mouse.y - mouse.ly;
+    mouse.v = Math.hypot(dx, dy);
+    mouse.vs += (mouse.v - mouse.vs) * 0.1;
+    mouse.vs = Math.min(100, mouse.vs);
+    mouse.lx = mouse.x; mouse.ly = mouse.y;
+    mouse.a = Math.atan2(dy, dx);
+    container.style.setProperty("--wx", mouse.sx + "px");
+    container.style.setProperty("--wy", mouse.sy + "px");
+    dot.style.transform = `translate3d(calc(${mouse.sx}px - 50%), calc(${mouse.sy}px - 50%), 0)`;
+    movePoints(time);
+    drawLines();
+    raf = requestAnimationFrame(tick);
+  }
+
+  function updateMouse(x, y) {
+    const rect = container.getBoundingClientRect();
+    mouse.x = x - rect.left;
+    mouse.y = y - rect.top + window.scrollY;
+    if (!mouse.set) {
+      mouse.sx = mouse.x; mouse.sy = mouse.y;
+      mouse.lx = mouse.x; mouse.ly = mouse.y;
+      mouse.set = true;
+    }
+  }
+
+  window.addEventListener("mousemove", e => updateMouse(e.pageX, e.pageY));
+  // على الموبايل: ما نديرش preventDefault باش يخلي scroll يخدم، وما نتابعوش cursor
+  if (!isMobile) {
+    window.addEventListener("touchmove", e => { updateMouse(e.touches[0].clientX, e.touches[0].clientY + window.scrollY); }, { passive: true });
+  }
+  window.addEventListener("resize", () => { setSize(); setLines(); });
+
+  initNoise();
+  setSize();
+  setLines();
+  raf = requestAnimationFrame(tick);
+})();
+
+/* ══════════════════════════════════════════
+   LANG
+══════════════════════════════════════════ */
+function setLang(l){
+  lang=l;
+  document.documentElement.lang=l;
+  document.documentElement.dir=l==="ar"?"rtl":"ltr";
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active",b.textContent.toLowerCase()===l));
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const k=el.getAttribute("data-i");
+    if(T[l][k]) el.textContent=T[l][k];
+  });
+  renderAll();
+}
+
+/* ══════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════ */
+function img(p){
+  return `<img src="${p.img}" alt="${p.name[lang]}" class="pimg"
+    onerror="this.onerror=null;this.src='${p.fb}'"/>`;
+}
+
+function renderProducts(){
+  const t=T[lang];
+  document.getElementById("productsGrid").innerHTML=PRODUCTS.map(p=>`
+    <div class="pcard" onclick="openDetail(${p.id})">
+      <div class="pimg-wrap">
+        ${img(p)}
+        <div class="pimg-overlay"></div>
+        <div class="ptag">${p.tag}</div>
+        <div class="prating">⭐ ${p.rating}</div>
+      </div>
+      <div class="pbody">
+        <div class="pname">${p.name[lang]}</div>
+        <div class="pbio">${p.short[lang]}</div>
+        <div class="pfooter">
+          <div>
+            <div class="pprice-lbl">${t.cardPrice||"السعر"}</div>
+            <div class="pprice">${p.price}</div>
+          </div>
+          <button class="btn-card" onclick="event.stopPropagation();openDetail(${p.id})">
+            ${t.cardOpen} ←
+          </button>
+        </div>
+      </div>
+      <div class="pcard-glow"></div>
+    </div>
+  `).join("");
+}
+
+function renderReviews(){
+  document.getElementById("reviewsGrid").innerHTML=REVIEWS[lang].map(r=>`
+    <div class="rcard">
+      <div class="rstars">★★★★★</div>
+      <div class="rquote">"</div>
+      <p class="rtext">${r.text}</p>
+      <div class="rauthor">
+        <div class="ravatar">${r.name[0]}</div>
+        <div><div class="rname">${r.name}</div><div class="rrole">${r.role}</div></div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function renderFaqs(){
+  document.getElementById("faqGrid").innerHTML=FAQS[lang].map(f=>`
+    <div class="fcard">
+      <div class="fq">${f.q}</div>
+      <div class="fa">${f.a}</div>
+    </div>
+  `).join("");
+}
+
+function renderMini(){
+  const el=document.getElementById("hcName");
+  const es=document.getElementById("hcSub");
+  if(el) el.textContent=PRODUCTS[0].name[lang];
+  if(es) es.textContent=PRODUCTS[0].short[lang];
+  const mini=document.getElementById("miniGrid");
+  if(!mini) return;
+  mini.innerHTML=PRODUCTS.slice(1,4).map(p=>`
+    <div class="mini-card" onclick="openDetail(${p.id})">
+      <img src="${p.img}" alt="${p.name[lang]}"
+        onerror="this.onerror=null;this.src='${p.fb}'"
+        style="width:100%;height:46px;object-fit:cover;border-radius:9px;display:block"/>
+      <div class="mc-n">${p.name[lang]}</div>
+      <div class="mc-p">${p.price}</div>
+    </div>
+  `).join("");
+}
+
+function renderAll(){renderProducts();renderReviews();renderFaqs();renderMini();}
+
+/* ══════════════════════════════════════════
+   DETAIL
+══════════════════════════════════════════ */
+function openDetail(id){
+  const p=PRODUCTS.find(x=>x.id===id);
+  if(!p) return;
+  const t=T[lang];
+
+  const di=document.getElementById("dImg");
+  di.src=p.img;
+  di.onerror=function(){this.onerror=null;this.src=p.fb};
+  di.alt=p.name[lang];
+
+  document.getElementById("dv2Tag").textContent=p.tag;
+  document.getElementById("dName").textContent=p.name[lang];
+  document.getElementById("dDesc").textContent=p.desc[lang];
+  document.getElementById("dRating").textContent=p.rating+" / 5";
+  document.getElementById("dv2Price").textContent=p.price;
+
+  // Features with staggered animation
+  const benefitsEl = document.getElementById("dBenefits");
+  benefitsEl.innerHTML = p.benefits[lang].map((b,i)=>`
+    <div class="dv2-feat" style="animation:fadeUp .3s ease ${i*0.06}s both">
+      <div class="dv2-feat-chk">✓</div>
+      <span class="dv2-feat-txt">${b}</span>
+    </div>
+  `).join("");
+
+  document.getElementById("dBtnWa").href=`https://wa.me/${WA}?text=${encodeURIComponent("هل لا يزال هذا العنصر متاحاً ؟ — "+p.name[lang])}`;
+  document.getElementById("dNote").innerHTML=`${t.detailsNote1||"غيّر"} <strong>WHATSAPP_NUMBER</strong> ${t.detailsNote2||"برقمك الحقيقي."}`;
+
+  // i18n
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const k=el.getAttribute("data-i");
+    if(T[lang][k]) el.textContent=T[lang][k];
+  });
+
+  document.getElementById("homePage").style.display="none";
+  document.getElementById("productDetail").classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+
+  // 3D tilt on image card
+  const card = document.getElementById("dv2Card");
+  if(card){
+    card.onmousemove = function(e){
+      const r = card.getBoundingClientRect();
+      const cx = r.left + r.width/2, cy = r.top + r.height/2;
+      const dx = (e.clientX - cx) / (r.width/2);
+      const dy = (e.clientY - cy) / (r.height/2);
+      card.style.transform = `perspective(900px) rotateY(${dx*6}deg) rotateX(${-dy*4}deg) translateY(-4px)`;
+    };
+    card.onmouseleave = function(){
+      card.style.transform = "";
+    };
+  }
+}
+
+function showHome(){
+  document.getElementById("productDetail").classList.remove("active");
+  document.getElementById("homePage").style.display="block";
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+function goTo(id){
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:"smooth"});
+}
+function toggleMenu(){
+  const m=document.getElementById("mobileMenu");
+  const open=m.classList.toggle("open");
+  document.getElementById("ico-open").style.display=open?"none":"block";
+  document.getElementById("ico-close").style.display=open?"block":"none";
+}
+function closeMenu(){
+  document.getElementById("mobileMenu").classList.remove("open");
+  document.getElementById("ico-open").style.display="block";
+  document.getElementById("ico-close").style.display="none";
+}
+
+/* hero grid responsive */
+function fixGrid(){
+  const g=document.querySelector(".hero");
+  if(!g) return;
+  g.style.gridTemplateColumns=window.innerWidth>=900?"1fr 1fr":"1fr";
+}
+fixGrid();
+window.addEventListener("resize",fixGrid);
+
+/* ══════════════════════════════════════════
+   LIMELIGHT NAV
+══════════════════════════════════════════ */
+function llActivate(btn){
+  document.querySelectorAll("#mainNav .nav-btn").forEach(b=>b.classList.remove("ll-active"));
+  btn.classList.add("ll-active");
+  llMove(btn);
+}
+function llMove(btn){
+  const bar = document.getElementById("navLimelight");
+  if(!bar||!btn) return;
+  const nav = document.getElementById("mainNav");
+  const nr = nav.getBoundingClientRect();
+  const br = btn.getBoundingClientRect();
+  const w = Math.min(br.width * 0.7, 70);
+  const left = (br.left - nr.left) + (br.width - w) / 2;
+  bar.style.left = left + "px";
+  bar.style.width = w + "px";
+}
+// init limelight on first active
+window.addEventListener("DOMContentLoaded", ()=>{
+  const active = document.querySelector("#mainNav .nav-btn.ll-active");
+  if(active){ setTimeout(()=>llMove(active), 80); }
+});
+window.addEventListener("resize", ()=>{
+  const active = document.querySelector("#mainNav .nav-btn.ll-active");
+  if(active) llMove(active);
+});
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+renderAll();
+</script>
+</body>
+</html>
